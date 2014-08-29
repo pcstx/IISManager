@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@model List<IISManager.Models.IISSiteEntity>
+
+<h2>IIS 网站管理</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>名称</th>
+            <th>物理路径</th>
+            <th>应用程序池</th>
+            <th>地址</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var m in Model)
+        { 
+             <tr>
+                <td>@m.Id</td>
+                 <td>@m.Name</td>
+                 <td>@m.PhysicalPath</td>
+                 <td>@m.Pool</td>
+                 <td>
+                     @foreach (var u in m.List_url)
+                     {
+                        @(u)<br/>
+                     }
+                 </td>
+                 <td>@m.State</td>
+                 <td>
+                     <input type="button" value="回收" onclick="recycile('@(m.Pool)')" />
+                     <input type="button" value="关闭" onclick="stop('@(m.Name)')" />
+                     <input type="button" value="删除" onclick="del('@(m.Name)')" />
+                 </td>
+            </tr> 
+        }        
+    </tbody>
+   @ViewBag.s
+
+</table>
+@section Foot{
+    <script>
+        $(function () {
+                
+        })
+
+        function recycile(name){
+            $.ajax({
+                type: "POST",
+                url: "/Default/Recycile",
+                data: "PoolName="+name,
+                success: function (msg) {
+                    if(msg=="1"){
+                        location=location;
+                    }
+                    else{
+                        alert(msg);
+                    }
+                }
+            });
+        }
+
+        function del(name){
+            $.ajax({
+                type: "POST",
+                url: "/Default/DelSite",
+                data: "SiteName="+name,
+                success: function (msg) {
+                    if(msg=="1"){
+                        location=location;
+                    }
+                    else{
+                        alert(msg);
+                    }
+                }
+            });
+        }
+
+        function stop(name) {
+            $.ajax({
+                type: "POST",
+                url: "/Default/ChangeState",
+                data: "SiteName="+name,
+                success: function (msg) {
+                    if(msg=="1"){
+                        location=location;
+                    }
+                    else{
+                        alert(msg);
+                    }
+                }
+            });
+        }
+
+    </script>
+}

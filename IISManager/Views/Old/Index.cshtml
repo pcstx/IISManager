@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@model List<IISManager.Controllers.IIS>
+
+<h2>Index</h2>
+<table>
+@{
+    foreach(var iis in Model)
+    {
+        <tr>
+            <td>@iis.Name</td>
+            <td>@iis.ServerComment</td>
+            <td>@iis.Path</td>
+        </tr>
+    
+    }
+    }
+    </table>
